@@ -1,4 +1,4 @@
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, DictProperty
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
@@ -38,7 +38,7 @@ class TelaQuiz(MDBoxLayout):
     def __init__(self, **kwargs):
         super(TelaQuiz, self).__init__(**kwargs)
         self.chkbox_ref = {}
-        self.chkbox_status = False
+        self.current_app = MDApp.get_running_app()
         self.cena = ""
         self.criar_layout()
 
@@ -100,9 +100,10 @@ class TelaQuiz(MDBoxLayout):
     def on_checkbox_active(self, checkbox, value):
         opcoes = dados_da_cena.get_opcao(self.cena)
         if value:
-            self.chkbox_status = True
+            self.current_app.chkbox_status['status'] = value
             if self.chkbox_ref[checkbox] == opcoes[0]:
                 print(opcoes[0])
+                print(self.current_app.chkbox_status['status'])
             else:
                 popup = MDDialog(
                     text="Fim Prematuro!",
@@ -124,6 +125,7 @@ class TelaRecrutamento(MDBoxLayout):
 class ViagemRoot(MDBoxLayout):
     def __init__(self, **kwargs):
         super(ViagemRoot, self).__init__(**kwargs)
+        self.current_app = MDApp.get_running_app()
         self.carousel = Carousel()
         self.cenas = dados_da_cena.get_cenas()
         self.popup = None
@@ -153,7 +155,9 @@ class ViagemRoot(MDBoxLayout):
         return cont
 
     def load_next_quiz(self, *args):
-        if self.viagem_quiz.chkbox_status is not True:
+        current = self.carousel.current_slide
+        status = self.current_app.chkbox_status['status']
+        if status is not True:
             self.popup = MDDialog(
                 text="Please select an option.",
                 size_hint_x=.8,
@@ -166,12 +170,15 @@ class ViagemRoot(MDBoxLayout):
             self.popup.buttons[0].bind(on_release=self.popup.dismiss)
             self.popup.open()
             print(self.carousel.slides)
-            return self.carousel.index
+            return self.carousel.load_slide(current)
 
+        self.current_app.chkbox_status['status'] = False
         return self.carousel.load_next()
 
     def load_prev_quiz(self, *args):
-        if self.viagem_quiz.chkbox_status is not True:
+        current = self.carousel.current_slide
+        status = self.viagem_quiz.chkbox_status
+        if status is not True:
             self.popup = MDDialog(
                 text="Please select an option.",
                 size_hint_x=.8,
@@ -183,13 +190,13 @@ class ViagemRoot(MDBoxLayout):
             )
             self.popup.buttons[0].bind(on_release=self.popup.dismiss)
             self.popup.open()
-            return self.carousel.index
+            return self.carousel.load_slide(current)
 
+        self.current_app.chkbox_status['status'] = False
         return self.carousel.load_previous()
 
 
 class ViagemApp(MDApp):
-    pass
-
+    chkbox_status = DictProperty({'status': False})
 
 ViagemApp().run()
