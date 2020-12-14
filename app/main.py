@@ -48,7 +48,7 @@ class TelaQuiz(MDBoxLayout):
 
     def chkbox(self):
         chk_box = MDCheckbox(group='opçao', color=[0.1, 1, 0, 4], size_hint=(None, None), size=("40dp", "40dp"),
-                             pos_hint= {"y": .3})
+                             pos_hint={"y": .3})
         return chk_box
 
     def lbl_texto(self, texto):
@@ -82,7 +82,6 @@ class TelaQuiz(MDBoxLayout):
         self.add_widget(dilema)
 
         for opcao in opcoes:
-
             chk_box = self.chkbox()
             chk_box.bind(active=self.on_checkbox_active)
 
@@ -198,5 +197,6 @@ class ViagemRoot(MDBoxLayout):
 
 class ViagemApp(MDApp):
     chkbox_status = DictProperty({'status': False})
+
 
 ViagemApp().run()
