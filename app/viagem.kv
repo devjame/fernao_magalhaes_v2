@@ -1,0 +1,30 @@
+
+<CheckOpcao@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(40), dp(40)
+    pos_hint: {"y": .3}
+
+<QuizLabel@MDLabel>:
+    lbl_texto: "ponha aqui um texto!ponha aqui um texto!ponha aqui um texto!"
+    valign: "middle"
+    size_hint_x: .9
+    text: "{}".format(self.lbl_texto)
+
+ViagemRoot:
+
+<ViagemRoot>:
+    id: app_root
+    orientation: 'vertical'
+    padding: dp(24)
+
+
+
+
+<TelaQuiz>:
+    orientation: 'vertical'
+    spacing: dp(12)
+    id: tela_quiz
+
+
+

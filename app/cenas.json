@@ -1,0 +1,42 @@
+{
+  "cena1": {
+  "contexto": "Após um dia de trabalho exaustivo em alto mar, entras na taverna 'Los Sevillanos' e pedes uma cerveja. Sentado ao balcão, começas a ouvir uma conversa sobre uma embarcação que parte em breve em descoberta de uma rota nunca antes navegada para as ilhas Molucas.",
+  "dilema": "Gostarias de saber mais ?",
+  "opções": {
+    "opção_1": "Sim, fiquei curioso!",
+    "opção_2": "Não, vou continuar a beber a minha cerveja descansado."
+  },
+    "proxima_cena": "CENA2",
+    "fim_cena": "FIM PREMATURO"
+  },
+  "cena2": {
+  "contexto": "Curioso por saber mais, diriges-te à mesa onde falam da grande viagem e é-te proposto que te alistes nesta demanda dirigida por Fernão de Magalhães, um capitão português.",
+  "dilema": "Desejas alistar-te nesta viagem incerta?",
+  "opções": {
+    "opção_1": "Sim, estou farto desta vida monótona!",
+    "opção_2": "Está fora de questão, como bom espanhol que sou nunca me submeteria às ordens de um capitão espanhol!"
+  },
+    "proxima_cena": "CENA3",
+    "fim_cena": "FIM PREMATURO"
+  },
+  "cena3": {
+  "contexto": "Curioso por saber mais, diriges-te à mesa onde falam da grande viagem e é-te proposto que te alistes nesta demanda dirigida por Fernão de Magalhães, um capitão português.",
+  "dilema": "Desejas alistar-te nesta viagem incerta?",
+  "opções": {
+    "opção_1": "Sim, estou farto desta vida monótona!",
+    "opção_2": "Está fora de questão, como bom espanhol que sou nunca me submeteria às ordens de um capitão espanhol!"
+  },
+    "proxima_cena": "CENA3",
+    "fim_cena": "FIM PREMATURO"
+  },
+  "cena4": {
+  "contexto": "Curioso por saber mais, diriges-te à mesa onde falam da grande viagem e é-te proposto que te alistes nesta demanda dirigida por Fernão de Magalhães, um capitão português.",
+  "dilema": "Desejas alistar-te nesta viagem incerta?",
+  "opções": {
+    "opção_1": "Sim, estou farto desta vida monótona!",
+    "opção_2": "Está fora de questão, como bom espanhol que sou nunca me submeteria às ordens de um capitão espanhol!"
+  },
+    "proxima_cena": "CENA3",
+    "fim_cena": "FIM PREMATURO"
+  }
+}
