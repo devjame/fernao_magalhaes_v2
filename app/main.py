@@ -1,7 +1,9 @@
+from functools import partial
+
 from kivy.properties import ObjectProperty, DictProperty
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDRaisedButton, MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.label import MDLabel
 from kivymd.uix.selectioncontrol import MDCheckbox
@@ -121,6 +123,16 @@ class TelaRecrutamento(MDBoxLayout):
     pass
 
 
+def container():
+    cont = MDBoxLayout()
+    return cont
+
+
+def btn_raised():
+    btn_raised = MDRaisedButton(size_hint_x='24dp', md_bg_color=(.190, .189, .191, 1))
+    return btn_raised
+
+
 class ViagemRoot(MDBoxLayout):
     def __init__(self, **kwargs):
         super(ViagemRoot, self).__init__(**kwargs)
@@ -131,27 +143,27 @@ class ViagemRoot(MDBoxLayout):
         for cena in self.cenas:
             self.viagem_quiz = TelaQuiz()
             self.viagem_quiz.criar_layout(cena)
-            btn_box = self.container()
+            btn_box = container()
             btn_box.size_hint_y = "40dp"
             if cena == 'cena1':
                 btn_box.orientation = 'vertical'
-                btn_next = MDFlatButton(text="Seguinte", size_hint_x='24dp', pos_hint={"x": .5})
+                btn_next = btn_raised()
+                btn_next.text = "Seguinte"
                 btn_next.bind(on_release=self.load_next_quiz)
                 btn_box.add_widget(btn_next)
             else:
-                btn_next = MDFlatButton(text="Seguinte", size_hint_x='24dp')
+                btn_next = btn_raised()
+                btn_next.text = "Seguinte"
                 btn_next.bind(on_release=self.load_next_quiz)
-                btn_prev = MDFlatButton(text="Anterior", size_hint_x='24dp')
+                btn_prev = btn_raised()
+                btn_prev.text = "Desistir"
                 btn_prev.bind(on_release=self.load_prev_quiz)
                 btn_box.add_widget(btn_prev)
+                btn_box.add_widget(MDLabel())
                 btn_box.add_widget(btn_next)
             self.viagem_quiz.add_widget(btn_box)
             self.carousel.add_widget(self.viagem_quiz)
         self.add_widget(self.carousel)
-
-    def container(self):
-        cont = MDBoxLayout()
-        return cont
 
     def load_next_quiz(self, *args):
         current = self.carousel.current_slide
@@ -176,27 +188,24 @@ class ViagemRoot(MDBoxLayout):
 
     def load_prev_quiz(self, *args):
         current = self.carousel.current_slide
-        status = self.viagem_quiz.chkbox_status
-        if status is not True:
-            self.popup = MDDialog(
-                text="Please select an option.",
-                size_hint_x=.8,
-                buttons=[
-                    MDFlatButton(
-                        text="OK"
-                    )
-                ],
-            )
-            self.popup.buttons[0].bind(on_release=self.popup.dismiss)
-            self.popup.open()
-            return self.carousel.load_slide(current)
-
-        self.current_app.chkbox_status['status'] = False
-        return self.carousel.load_previous()
+        self.popup = MDDialog(
+            text="Please select an option.",
+            size_hint_x=.8,
+            buttons=[
+                MDFlatButton(
+                    text="OK"
+                )
+            ],
+        )
+        self.popup.buttons[0].bind(on_release=self.popup.dismiss)
+        self.popup.open()
+        inicio = self.carousel.slides[self.carousel.slides.index(current)-1]
+        return self.carousel.load_slide(inicio)
 
 
 class ViagemApp(MDApp):
     chkbox_status = DictProperty({'status': False})
+    respostas = DictProperty()
 
 
 ViagemApp().run()
