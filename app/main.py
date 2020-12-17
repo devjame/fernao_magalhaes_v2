@@ -1,5 +1,3 @@
-from functools import partial
-
 from kivy.properties import ObjectProperty, DictProperty
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -9,7 +7,6 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivy.uix.carousel import Carousel
 from kivy.core.window import Window
-from kivy.factory import Factory
 from ler_cenas import Cenas
 
 Window.size = (320, 670)
@@ -44,16 +41,19 @@ class TelaQuiz(MDBoxLayout):
         self.cena = ""
         self.criar_layout()
 
-    def container(self):
+    @staticmethod
+    def container():
         cont = MDBoxLayout()
         return cont
 
-    def chkbox(self):
+    @staticmethod
+    def chkbox():
         chk_box = MDCheckbox(group='opçao', color=[0.1, 1, 0, 4], size_hint=(None, None), size=("40dp", "40dp"),
                              pos_hint={"y": .3})
         return chk_box
 
-    def lbl_texto(self, texto):
+    @staticmethod
+    def lbl_texto(texto):
         lbl = MDLabel(text=texto, font_size="16dp", valign="middle", size_hint_x=.9)
         return lbl
 
@@ -103,8 +103,7 @@ class TelaQuiz(MDBoxLayout):
         if value:
             self.current_app.chkbox_status['status'] = value
             if self.chkbox_ref[checkbox] == opcoes[0]:
-                print(opcoes[0])
-                print(self.current_app.chkbox_status['status'])
+                self.current_app.respostas[self.cena] = self.chkbox_ref[checkbox]
             else:
                 popup = MDDialog(
                     text="Fim Prematuro!",
@@ -129,8 +128,8 @@ def container():
 
 
 def btn_raised():
-    btn_raised = MDRaisedButton(size_hint_x='24dp', md_bg_color=(.190, .189, .191, 1))
-    return btn_raised
+    btn_rd = MDRaisedButton(size_hint_x='24dp', md_bg_color=(.190, .189, .191, 1))
+    return btn_rd
 
 
 class ViagemRoot(MDBoxLayout):
@@ -188,18 +187,10 @@ class ViagemRoot(MDBoxLayout):
 
     def load_prev_quiz(self, *args):
         current = self.carousel.current_slide
-        self.popup = MDDialog(
-            text="Please select an option.",
-            size_hint_x=.8,
-            buttons=[
-                MDFlatButton(
-                    text="OK"
-                )
-            ],
-        )
-        self.popup.buttons[0].bind(on_release=self.popup.dismiss)
-        self.popup.open()
-        inicio = self.carousel.slides[self.carousel.slides.index(current)-1]
+        total_slides = len(self.carousel.slides)-1
+        inicio = self.carousel.slides[self.carousel.slides.index(current) - total_slides]
+        self.current_app.chkbox_status['status'] = False
+        print(self.current_app.respostas)
         return self.carousel.load_slide(inicio)
 
 
